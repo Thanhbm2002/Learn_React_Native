@@ -5,7 +5,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.header}>TextComp</Text>
+        <Text style={styles.header}>Header</Text>
+        <Text style={styles.parent}>Parent
+        <Text style={styles.child}>Child</Text></Text>
       </View>
       <Text style={styles.hello1}>Hello World
       </Text>
@@ -31,5 +33,14 @@ const styles = StyleSheet.create({
   header: {
     fontSize:30,
     fontWeight: "600"
+  },
+  parent: {
+    fontSize: 50,
+    color: "green",
+  },
+  child: {
+    fontSize: 50,
+    color: "magenta"
   }
+
 });
