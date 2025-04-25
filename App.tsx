@@ -1,26 +1,45 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Button } from 'react-native';
+import { Button, TextInput } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
 
-  const [name, setName] = useState<string>("Try me");
-  const [test, setTest] = useState({
-    name: 'ten',
-    age: 25
-  });
   const [count, setCount] = useState<number>(0);
-
+  const [name, setName] = useState<String>("");
+  const [age, setAge] = useState<number>();
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 60, fontWeight: "600"}}>{name}</Text>
-      <Text style={{ fontSize: 60, fontWeight: "600"}}>{test.name} {test.age}</Text>
-      <Text style={{ fontSize: 60, fontWeight: "600"}}>{JSON.stringify(test)}</Text>
-      <Text style={{ fontSize: 60, fontWeight: "600"}}> count = {count}</Text>
       <View>
-       <Button title='Increase' onPress={() => setCount(count +1)}/>
+      <Text style={{ fontSize: 60, fontWeight: "600"}}>Name: {name} </Text>
+      <TextInput
+        multiline
+        autoCapitalize={"words"}
+        style={{
+          borderColor: "green",
+          borderWidth: 1,
+          width:200,
+          padding:10}}
+        onChangeText={(value) => setName(value)} />
       </View>
+      
+      <View>
+      <Text style={{ fontSize: 60, fontWeight: "600"}}>Age: {age} </Text>
+      <TextInput
+        multiline
+        style={{
+          borderColor: "green",
+          borderWidth: 1,
+          width:200,
+          padding:10}}
+        onChangeText={(value) => setAge(+value)}
+        keyboardType='numeric'
+        maxLength={2}
+      />
+      </View>
+
+      <Text style={{ fontSize: 60, fontWeight: "600"}}> count = {count}</Text>
+      <Button title='Increase' onPress={() => setCount(count +1)}/>
     </View>
   );
 }
