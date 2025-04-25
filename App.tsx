@@ -3,74 +3,88 @@ import { useState } from 'react';
 import { FlatList, Button, ScrollView, TextInput } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
+interface IToDo {
+  id: number;
+  name: string
+}
 export default function App() {
 
-  const[students, setStudents] = useState([
-    {id: 1, name: "Thanh1", age: 18},
-    {id: 2, name: "Thanh2", age: 19},
-    {id: 3, name: "Thanh3", age: 20},
-    {id: 4, name: "Thanh4", age: 21},
-    {id: 5, name: "Thanh5", age: 22},
-    {id: 6, name: "Thanh6", age: 23},
-    {id: 7, name: "Thanh7", age: 24},
-    {id: 8, name: "Thanh8", age: 25},
-    {id: 9, name: "Thanh9", age: 26},
-    {id: 10, name: "Thanh10", age: 27},
-    {id: 11, name: "Thanh1", age: 18},
-    {id: 12, name: "Thanh2", age: 19},
-    {id: 13, name: "Thanh3", age: 20},
-    {id: 14, name: "Thanh4", age: 21},
-    {id: 15, name: "Thanh5", age: 22},
-    {id: 16, name: "Thanh6", age: 23},
-    {id: 17, name: "Thanh7", age: 24},
-    {id: 18, name: "Thanh8", age: 25},
-    {id: 19, name: "Thanh9", age: 26},
-    {id: 20, name: "Thanh10", age: 27}
-  ])
+  const[toDo, setToDo] = useState("");
+  const[listToDo, setListToDo] = useState<IToDo[]>([
+
+  ]);
+
+  function randomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min +1) + min);
+  }
+
+  const handleAddToDo =() => {
+    setListToDo([...listToDo, 
+      {id:randomInt(2,10000), name: toDo }
+    ]);
+    setToDo("")
+  }
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 60}}>Hello World</Text>
-      <FlatList
-      data={students} 
-      keyExtractor={item => item.id + ""}
-      renderItem={({item}) => {
-          return (
-        <View style={{
-          backgroundColor: "pink",
-          marginBottom: 30,
-          padding: 15
-        }}>
-          <Text>{item.name}</Text>
-        </View> 
-      )
-      }}
-      />
+      {/* header*/}
 
+      <Text style={styles.header}>To-do App</Text>
 
-      {/* <ScrollView>
-        {students.map(item => {
+      {/* form  */}
+      <View>
+        <TextInput style={styles.toDoInput}
+          value={toDo}
+          onChangeText={(value) => setToDo(value)}
+        />
+        <Button title='Add To-do'
+          onPress={handleAddToDo}
+        />
+      </View>
+  
+      {/* list  */}
+      <View style={styles.body}>
+        <FlatList 
+        data={listToDo}
+        renderItem={({item}) =>{
           return (
-            <View  key={item.id} style={{
-              backgroundColor: "pink",
-              marginBottom: 30,
-              padding: 15}}>
-              <Text>{item.name}</Text>
-            </View> 
+            <Text style={styles.todoItem}>{item.name}</Text>
           )
-        })}
-      </ScrollView> */}
+        }}
+
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "cyan",
+    paddingHorizontal: 20,
+    textAlign: "center",
+    fontSize: 50, 
+  },
   container: {
     paddingTop: 50,
-    paddingHorizontal: 20,
     flex: 1,
     backgroundColor: '#fff',
     // alignItems: 'center',
     // justifyContent: 'center',
   },
-
+  toDoInput: {
+    borderWidth: 1,
+    borderColor:"gray",
+    padding: 5,
+    margin: 15,
+  },
+  body: {
+    paddingHorizontal: 10,
+    marginBottom:20,
+  },
+  todoItem: {
+    fontSize: 20,
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 10,
+  },
 });
