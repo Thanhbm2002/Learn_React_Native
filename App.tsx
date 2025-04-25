@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Button, ScrollView, TextInput } from 'react-native';
+import { FlatList, Button, ScrollView, TextInput } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
@@ -28,9 +28,26 @@ export default function App() {
     {id: 20, name: "Thanh10", age: 27}
   ])
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Text style={{ fontSize: 60}}>Hello World</Text>
-      <View>
+      <FlatList
+      data={students} 
+      keyExtractor={item => item.id + ""}
+      renderItem={({item}) => {
+          return (
+        <View style={{
+          backgroundColor: "pink",
+          marginBottom: 30,
+          padding: 15
+        }}>
+          <Text>{item.name}</Text>
+        </View> 
+      )
+      }}
+      />
+
+
+      {/* <ScrollView>
         {students.map(item => {
           return (
             <View  key={item.id} style={{
@@ -41,8 +58,8 @@ export default function App() {
             </View> 
           )
         })}
-      </View>
-    </ScrollView>
+      </ScrollView> */}
+    </View>
   );
 }
 
