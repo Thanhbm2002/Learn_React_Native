@@ -1,18 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { FlatList, Button, ScrollView, TextInput } from 'react-native';
+import { FlatList, Button, ScrollView, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
 
 interface IToDo {
   id: number;
   name: string
 }
+
 export default function App() {
 
   const[toDo, setToDo] = useState("");
-  const[listToDo, setListToDo] = useState<IToDo[]>([
-
-  ]);
+  const[listToDo, setListToDo] = useState<IToDo[]>([]);
 
   function randomInt(min: number, max: number) {
     return Math.floor(Math.random() * (max - min +1) + min);
@@ -24,6 +23,12 @@ export default function App() {
     ]);
     setToDo("")
   }
+
+  const deleteToDo = (id: number) =>{
+    const newToDo = listToDo.filter(item => item.id !== id)
+    setListToDo(newToDo)
+  }
+
   return (
     <View style={styles.container}>
       {/* header*/}
@@ -47,7 +52,9 @@ export default function App() {
         data={listToDo}
         renderItem={({item}) =>{
           return (
-            <Text style={styles.todoItem}>{item.name}</Text>
+            <Pressable onPress={() => deleteToDo(item.id)}>
+              <Text style={styles.todoItem}>{item.name}</Text>
+            </Pressable>
           )
         }}
 
@@ -88,3 +95,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
+
