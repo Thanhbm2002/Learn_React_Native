@@ -1,7 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { FlatList, Button, ScrollView, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import { FlatList, Button, ScrollView, TextInput, TouchableOpacity, Pressable, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { StyleSheet, Text, View } from 'react-native';
+import FlexBox from './components/flexbox';
+
 
 interface IToDo {
   id: number;
@@ -18,6 +20,23 @@ export default function App() {
   }
 
   const handleAddToDo =() => {
+    if(!toDo) {
+      Alert.alert("Lỗi input to-do", "To-do không được để trống",
+        [
+         {
+          text: 'Hủy',
+          onPress: () => console.log("Cancel Pressed"),
+          style: 'cancel',
+         },
+         {
+          text: 'OK',
+          onPress: () => console.log("OK Pressed"),
+          style: "default",
+         },
+        ]
+      )
+      return;
+    }
     setListToDo([...listToDo, 
       {id:randomInt(2,10000), name: toDo }
     ]);
@@ -30,37 +49,40 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      {/* header*/}
+    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    // <View style={styles.container}>
+    //   {/* header*/}
 
-      <Text style={styles.header}>To-do App</Text>
+    //   <Text style={styles.header}>To-do App</Text>
 
-      {/* form  */}
-      <View>
-        <TextInput style={styles.toDoInput}
-          value={toDo}
-          onChangeText={(value) => setToDo(value)}
-        />
-        <Button title='Add To-do'
-          onPress={handleAddToDo}
-        />
-      </View>
+    //   {/* form  */}
+    //   <View>
+    //     <TextInput style={styles.toDoInput}
+    //       value={toDo}
+    //       onChangeText={(value) => setToDo(value)}
+    //     />
+    //     <Button title='Add To-do'
+    //       onPress={handleAddToDo}
+    //     />
+    //   </View>
   
-      {/* list  */}
-      <View style={styles.body}>
-        <FlatList 
-        data={listToDo}
-        renderItem={({item}) =>{
-          return (
-            <Pressable onPress={() => deleteToDo(item.id)}>
-              <Text style={styles.todoItem}>{item.name}</Text>
-            </Pressable>
-          )
-        }}
+    //   {/* list  */}
+    //   <View style={styles.body}>
+    //     <FlatList 
+    //     data={listToDo}
+    //     renderItem={({item}) =>{
+    //       return (
+    //         <Pressable onPress={() => deleteToDo(item.id)}>
+    //           <Text style={styles.todoItem}>{item.name}</Text>
+    //         </Pressable>
+    //       )
+    //     }}
 
-        />
-      </View>
-    </View>
+    //     />
+    //   </View>
+    // </View>
+    // </TouchableWithoutFeedback>
+    <FlexBox/>
   );
 }
 
