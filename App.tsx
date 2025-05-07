@@ -1,120 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { FlatList, Button, ScrollView, TextInput, TouchableOpacity, Pressable, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { StyleSheet, Text, View } from 'react-native';
-import FlexBox from './components/flexbox';
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import HomeScreen from './components/review/home'
+import DetailScreen from './components/review/detail'
+import AboutScreen from './components/review/about'
+import { useFonts } from 'expo-font'; 
+import * as SplashScreen from 'expo-splash-screen'; 
+import { useEffect } from 'react';
+import { OPENSANS_REGULAR } from "././utils/const";
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-interface IToDo {
-  id: number;
-  name: string
-}
+SplashScreen.preventAutoHideAsync();
 
-export default function App() {
-
-  const[toDo, setToDo] = useState("");
-  const[listToDo, setListToDo] = useState<IToDo[]>([]);
-
-  function randomInt(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min +1) + min);
-  }
-
-  const handleAddToDo =() => {
-    if(!toDo) {
-      Alert.alert("Lỗi input to-do", "To-do không được để trống",
-        [
-         {
-          text: 'Hủy',
-          onPress: () => console.log("Cancel Pressed"),
-          style: 'cancel',
-         },
-         {
-          text: 'OK',
-          onPress: () => console.log("OK Pressed"),
-          style: "default",
-         },
-        ]
-      )
-      return;
+const App = () => {
+  const [loaded, error] = useFonts({
+    [OPENSANS_REGULAR]: require('./assets/fonts/Open_Sans/OpenSans-Regular.ttf'),
+  });
+ 
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
     }
-    setListToDo([...listToDo, 
-      {id:randomInt(2,10000), name: toDo }
-    ]);
-    setToDo("")
+  }, [loaded, error]);
+ 
+  if (!loaded && !error) {
+    return null;
   }
 
-  const deleteToDo = (id: number) =>{
-    const newToDo = listToDo.filter(item => item.id !== id)
-    setListToDo(newToDo)
-  }
+
+  const Stack = createNativeStackNavigator();
 
   return (
-    // <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    // <View style={styles.container}>
-    //   {/* header*/}
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen}
+        options={{title: 'Trang chủ'}} 
+        />
+        <Stack.Screen name="Details" component={DetailScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
 
-    //   <Text style={styles.header}>To-do App</Text>
-
-    //   {/* form  */}
-    //   <View>
-    //     <TextInput style={styles.toDoInput}
-    //       value={toDo}
-    //       onChangeText={(value) => setToDo(value)}
-    //     />
-    //     <Button title='Add To-do'
-    //       onPress={handleAddToDo}
-    //     />
-    //   </View>
-  
-    //   {/* list  */}
-    //   <View style={styles.body}>
-    //     <FlatList 
-    //     data={listToDo}
-    //     renderItem={({item}) =>{
-    //       return (
-    //         <Pressable onPress={() => deleteToDo(item.id)}>
-    //           <Text style={styles.todoItem}>{item.name}</Text>
-    //         </Pressable>
-    //       )
-    //     }}
-
-    //     />
-    //   </View>
-    // </View>
-    // </TouchableWithoutFeedback>
-    <FlexBox/>
-  );
+  )
 }
 
+export default App;
+
 const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "cyan",
-    paddingHorizontal: 20,
-    textAlign: "center",
-    fontSize: 50, 
-  },
   container: {
-    paddingTop: 50,
     flex: 1,
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  toDoInput: {
-    borderWidth: 1,
-    borderColor:"gray",
-    padding: 5,
-    margin: 15,
-  },
-  body: {
-    paddingHorizontal: 10,
-    marginBottom:20,
-  },
-  todoItem: {
-    fontSize: 20,
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 10,
-  },
-});
+ });
 
