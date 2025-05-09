@@ -2,6 +2,7 @@ import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { useState } from "react"
 import { Text, View, Button, FlatList, TouchableOpacity , StyleSheet} from "react-native"
 import AppHeader from "../navigations/app.header";
+import CreateModal from "./create.modal";
 interface IReview {
     id: number;
     title: string;
@@ -24,9 +25,11 @@ const HomeScreen = (props: any) => {
         { id: 2, title: "hoidanit", star: 5 }
     ]);
 
+    const [modalVisible, setModalVisible]= useState(false)
     return (
         <View>
             <Text style={{ fontSize: 30 , paddingLeft:15 }}>Review list:</Text>
+            <Button title="Add" onPress={() =>setModalVisible(true)}/>
             <View>
                 <FlatList
                     data={reviews}
@@ -44,7 +47,10 @@ const HomeScreen = (props: any) => {
                     }}
                 />
             </View>
-
+                    <CreateModal
+                    modalVisible={modalVisible}
+                    setModalVisible={setModalVisible}
+                    />
         </View>
     )
 }
