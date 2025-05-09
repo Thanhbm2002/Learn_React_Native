@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { OPENSANS_REGULAR } from "././utils/const";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator} from '@react-navigation/drawer';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -30,15 +31,28 @@ const App = () => {
 
 
   const Stack = createNativeStackNavigator<RootStackParamList>();
+  const Drawer = createDrawerNavigator<RootStackParamList>();
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      {/* <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen}
         options={{title: 'Trang chủ'}} 
         />
-        <Stack.Screen name="Details" component={DetailScreen} />
-      </Stack.Navigator>
+        <Stack.Screen name="Details" component={DetailScreen}
+        options={{title: 'Chi tiết'}}  />
+      </Stack.Navigator> */}
+      
+      <Drawer.Navigator>
+        <Drawer.Screen name="Home" component={HomeScreen}
+        options={{title: 'Trang chủ'}} 
+        />
+        <Drawer.Screen name="Details" component={DetailScreen}
+        options={{title: 'Chi tiết'}}  />
+        <Drawer.Screen name="About" component={AboutScreen}
+        options={{title: 'Thông tin'}}  />
+      </Drawer.Navigator>
+      
     </NavigationContainer>
 
   )
